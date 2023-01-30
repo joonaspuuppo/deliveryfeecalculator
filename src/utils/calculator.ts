@@ -1,4 +1,13 @@
-const calculateDeliveryFee = (cartValue, deliveryDistance, itemCount, time) => {
+interface DeliveryFee {
+    total: number
+    smallOrderSurcharge: number,
+    fivePlusItemSurcharge: number,
+    twelvePlusItemSurcharge: number,
+    deliveryDistanceCharge: number,
+    fridayRushMultiplier: number
+}
+
+const calculateDeliveryFee = (cartValue: number, deliveryDistance: number, itemCount: number, time: Date): DeliveryFee => {
 
     console.log("Calculating delivery fee")
     console.log(`Cart value: ${cartValue}`)
@@ -33,7 +42,7 @@ const calculateDeliveryFee = (cartValue, deliveryDistance, itemCount, time) => {
     }
 
     deliveryFee.total =    deliveryFee.fridayRushMultiplier 
-                        * (deliveryFee.smallOrderSurcharge 
+                         * (deliveryFee.smallOrderSurcharge 
                          + deliveryFee.fivePlusItemSurcharge 
                          + deliveryFee.twelvePlusItemSurcharge 
                          + deliveryFee.deliveryDistanceCharge)
@@ -46,7 +55,7 @@ const calculateDeliveryFee = (cartValue, deliveryDistance, itemCount, time) => {
 
 }
 
-const calculateDistanceFee = (deliveryDistance) => {
+const calculateDistanceFee = (deliveryDistance: number): number => {
 
     // base fee is 2, covers up to 1000m
     let distanceFee = 2
@@ -61,6 +70,4 @@ const calculateDistanceFee = (deliveryDistance) => {
     return distanceFee
 }
 
-module.exports = {
-    calculateDeliveryFee
-}
+export default calculateDeliveryFee

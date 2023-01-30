@@ -8,7 +8,7 @@ function App() {
   return (
     <div className="app">
       <h1>Delivery Fee Calculator</h1>
-      <CalculatorForm updateDeliveryFee={fee => setDeliveryFee(fee)}/>
+      <CalculatorForm updateDeliveryFee={(fee: number) => setDeliveryFee(fee)}/>
       <p>Delivery fee: <strong>{deliveryFee} €</strong></p>
     </div>
   );

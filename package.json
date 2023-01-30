@@ -40,10 +40,18 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {
-    "jest": "^27.5.1"
-  },
   "jest": {
-    "testEnvironment": "node"
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "transform": {
+      "node_modules/variables/.+\\.(j|t)sx?$": "ts-jest"
+    },
+    "transformIgnorePatterns": [
+      "node_modules/(?!variables/.*)"
+    ]
+  },
+  "devDependencies": {
+    "jest": "^29.4.1",
+    "ts-jest": "^29.0.5"
   }
 }
