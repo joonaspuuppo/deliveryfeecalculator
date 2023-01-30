@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react"
-import calculateDeliveryFee from "../utils/calculator"
+const calculateDeliveryFee = require("../utils/calculator").calculateDeliveryFee
 
 const CalculatorForm = ({updateDeliveryFee}) => {
     const [cartValue, setCartValue] = useState("0")
     const [deliveryDistance, setDeliveryDistance] = useState("0")
     const [itemCount, setItemCount] = useState("0")
+
+    // datetime-local input string doesn't contain time zone information so it's removed from the default value
     const [time, setTime] = useState(new Date().toISOString().split(".")[0])
     const [formIsValid, setFormIsValid] = useState(true)
     
@@ -47,10 +49,11 @@ const CalculatorForm = ({updateDeliveryFee}) => {
 
     const handleCalculateDeliveryFee = (e) => {
         e.preventDefault()
+        // if a comma was used as a decimal separator it's replaced with a dot
+        // and time zone (UTC) information is added to the datetime input
         const deliveryFee = calculateDeliveryFee(cartValue.replace(",", "."), deliveryDistance, itemCount, new Date(time + ".000Z"))
         updateDeliveryFee(deliveryFee.total.toFixed(2))
     }
-
 
     return (
         <form onSubmit={handleCalculateDeliveryFee}>
