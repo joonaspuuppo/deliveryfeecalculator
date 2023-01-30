@@ -10,10 +10,10 @@ const calculateDeliveryFee = (cartValue, deliveryDistance, itemCount, time) => {
     const deliveryFee = {
         total: 0,
         smallOrderSurcharge: 0,
-        fivePlusItemsSurcharge: 0,
+        fivePlusItemSurcharge: 0,
         twelvePlusItemSurcharge: 0,
         deliveryDistanceCharge: 0,
-        rushHourMultiplier: 1
+        fridayRushMultiplier: 1
     }
 
     if (cartValue >= 100) return deliveryFee
@@ -22,24 +22,24 @@ const calculateDeliveryFee = (cartValue, deliveryDistance, itemCount, time) => {
 
     if (cartValue < 10) deliveryFee.smallOrderSurcharge = 10 - cartValue
 
-    if (itemCount >= 5) deliveryFee.fivePlusItemsSurcharge = (itemCount - 4) * 0.5
+    if (itemCount >= 5) deliveryFee.fivePlusItemSurcharge = (itemCount - 4) * 0.5
 
     if (itemCount > 12) deliveryFee.twelvePlusItemSurcharge = 1.20
 
     if (time.getUTCDay() === 5) {
         if (time.getUTCHours() >= 15 && time.getUTCHours() <= 19) {
-            deliveryFee.rushHourMultiplier = 1.2
+            deliveryFee.fridayRushMultiplier = 1.2
         }
     }
 
-    deliveryFee.total =    deliveryFee.rushHourMultiplier 
+    deliveryFee.total =    deliveryFee.fridayRushMultiplier 
                         * (deliveryFee.smallOrderSurcharge 
-                         + deliveryFee.fivePlusItemsSurcharge 
+                         + deliveryFee.fivePlusItemSurcharge 
                          + deliveryFee.twelvePlusItemSurcharge 
                          + deliveryFee.deliveryDistanceCharge)
     
     if (deliveryFee.total > 15) deliveryFee.total = 15
-    
+
     console.log(deliveryFee)
 
     return deliveryFee
@@ -61,4 +61,6 @@ const calculateDistanceFee = (deliveryDistance) => {
     return distanceFee
 }
 
-export default calculateDeliveryFee
+module.exports = {
+    calculateDeliveryFee
+}

@@ -1,11 +1,29 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import calculateDeliveryFee from "../utils/calculator"
 
 const CalculatorForm = ({updateDeliveryFee}) => {
-    const [cartValue, setCartValue] = useState(0)
-    const [deliveryDistance, setDeliveryDistance] = useState(0)
-    const [itemCount, setItemCount] = useState(0)
+    const [cartValue, setCartValue] = useState("0")
+    const [deliveryDistance, setDeliveryDistance] = useState("0")
+    const [itemCount, setItemCount] = useState("0")
     const [time, setTime] = useState(new Date().toISOString().split(".")[0])
+    const [formIsValid, setFormIsValid] = useState(true)
+    
+    // validate inputs on change
+    useEffect(() => {
+        const positiveDecimalRegex = /^\d+([.,]\d{1,2})?$/;
+
+        if (!positiveDecimalRegex.test(cartValue) || deliveryDistance < 0 || itemCount < 0) {
+            setFormIsValid(false)
+        } else {
+            setFormIsValid(true)
+        }
+
+    }, [cartValue, deliveryDistance, itemCount])
+
+    // disable calculator if input is invalid
+    useEffect(() => {
+        document.getElementById("calculateButton").disabled = !formIsValid
+    }, [formIsValid])
 
     const handleCartValueChange = (e) => {
         e.preventDefault()
@@ -29,7 +47,7 @@ const CalculatorForm = ({updateDeliveryFee}) => {
 
     const handleCalculateDeliveryFee = (e) => {
         e.preventDefault()
-        const deliveryFee = calculateDeliveryFee(cartValue, deliveryDistance, itemCount, new Date(time + ".000Z"))
+        const deliveryFee = calculateDeliveryFee(cartValue.replace(",", "."), deliveryDistance, itemCount, new Date(time + ".000Z"))
         updateDeliveryFee(deliveryFee.total.toFixed(2))
     }
 
@@ -52,7 +70,7 @@ const CalculatorForm = ({updateDeliveryFee}) => {
             Time:
             <input type="datetime-local" value={time} onChange={handleTimeChange} />
             </label><br/>
-            <button type="submit">Calculate delivery fee</button>
+            <button type="submit" id="calculateButton">Calculate delivery fee</button>
         </form>
     )
 }
