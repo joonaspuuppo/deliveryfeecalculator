@@ -2,7 +2,7 @@ import { useState } from "react";
 import CalculatorForm from "./components/CalculatorForm";
 
 function App() {
-  const [deliveryFee, setDeliveryFee] = useState(0)
+  const [deliveryFee, setDeliveryFee] = useState<number | string>("--")
 
 
   return (
