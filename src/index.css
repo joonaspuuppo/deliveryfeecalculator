@@ -22,6 +22,7 @@ code {
   margin: auto;
   padding: 2em;
   background-color: white;
+  box-shadow: 10px 10px #019DE0;
   border-radius: 1em;
 } 
 
