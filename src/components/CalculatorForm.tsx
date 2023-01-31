@@ -5,9 +5,7 @@ const CalculatorForm = ({updateDeliveryFee}:{updateDeliveryFee:any}) => {
     const [cartValue, setCartValue] = useState<string>("")
     const [deliveryDistance, setDeliveryDistance] = useState<string>("")
     const [itemCount, setItemCount] = useState<string>("")
-
-    // datetime-local input string doesn't contain time zone information so it's removed from the default value
-    const [time, setTime] = useState<string>(new Date().toISOString().split(".")[0])
+    const [time, setTime] = useState<Date>(new Date())
 
     const handleCartValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault()
@@ -26,7 +24,7 @@ const CalculatorForm = ({updateDeliveryFee}:{updateDeliveryFee:any}) => {
 
     const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault()
-        setTime(e.target.value)
+        setTime(new Date(e.target.value) || new Date())
     }
 
     const handleCalculateDeliveryFee = (e: React.SyntheticEvent) => {
@@ -37,7 +35,7 @@ const CalculatorForm = ({updateDeliveryFee}:{updateDeliveryFee:any}) => {
         const itemCountAsNumber = parseInt(itemCount) || 0
         
         // time zone (UTC) information is added to the datetime input
-        const deliveryFee = calculateDeliveryFee(cartValueAsNumber, deliveryDistanceAsNumber, itemCountAsNumber, new Date(time + ".000Z"))
+        const deliveryFee = calculateDeliveryFee(cartValueAsNumber, deliveryDistanceAsNumber, itemCountAsNumber, time)
         updateDeliveryFee(deliveryFee.total.toFixed(2))
     }
 
@@ -57,7 +55,7 @@ const CalculatorForm = ({updateDeliveryFee}:{updateDeliveryFee:any}) => {
             </label><br/>
             <label>
             Time:
-            <input type="datetime-local" value={time} onChange={handleTimeChange} />
+            <input type="datetime-local" value={time.toISOString().split(".")[0]} onChange={handleTimeChange} />
             </label><br/>
             <button type="submit" id="calculateButton">Calculate delivery fee</button>
         </form>
