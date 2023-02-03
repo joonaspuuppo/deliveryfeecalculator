@@ -34,10 +34,13 @@ const CalculatorForm = ({updateDeliveryFee}:{updateDeliveryFee:any}) => {
         const deliveryDistanceAsNumber = parseInt(deliveryDistance) || 0
         const itemCountAsNumber = parseInt(itemCount) || 0
         
-        // time zone (UTC) information is added to the datetime input
         const deliveryFee = calculateDeliveryFee(cartValueAsNumber, deliveryDistanceAsNumber, itemCountAsNumber, time)
         updateDeliveryFee(deliveryFee.total.toFixed(2))
     }
+
+    // datetime-local input value is set to time.toISOString().substring(0, 16) 
+    // to remove seconds, milliseconds and timezone information
+    // from the end of the string: 2023-02-03T04:36:03.409Z --> 2023-02-03T04:36
 
     return (
         <form onSubmit={handleCalculateDeliveryFee}>
@@ -55,7 +58,7 @@ const CalculatorForm = ({updateDeliveryFee}:{updateDeliveryFee:any}) => {
             </label><br/>
             <label>
             Time:
-            <input type="datetime-local" value={time.toISOString().split(".")[0]} onChange={handleTimeChange} />
+            <input type="datetime-local" value={time.toISOString().substring(0, 16)} min={new Date().toISOString().substring(0, 16)} onChange={handleTimeChange} />
             </label><br/>
             <button type="submit" id="calculateButton">Calculate delivery fee</button>
         </form>
