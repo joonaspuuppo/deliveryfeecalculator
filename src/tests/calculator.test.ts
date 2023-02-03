@@ -1,7 +1,7 @@
 import calculateDeliveryFee from "../utils/calculator"
 
-const normalTime = new Date("2023-01-30T06:47:51.000Z")
-const rushTime = new Date("2023-02-03T17:47:51.000Z")
+const normalTime = new Date("2023-01-30T06:47")
+const rushTime = new Date("2023-02-03T17:47")
 
 test("if cart value is < 10, small order surcharge of 10 - cart value gets added", () => {
     const deliveryFee = calculateDeliveryFee(9, 0, 0, normalTime)
